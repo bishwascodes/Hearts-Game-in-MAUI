@@ -3,6 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hearts.Pages.ScorePage"
              Title="Score">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Rules" Command="{Binding ShowRulesCommand}" />
+    </ContentPage.ToolbarItems>
+    
+    
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="12">
 
@@ -61,56 +67,10 @@
 
             <!-- Round history -->
             <Label Text="Round History" FontAttributes="Bold" FontSize="16" Margin="0,20,0,0"/>
-            
-            <Border Stroke="#CCCCCC" 
-                    StrokeThickness="1" 
-                    Background="#FFFFFF" 
-                    Padding="0"
-                    StrokeShape="RoundRectangle 5">
-                <VerticalStackLayout>
-                    <!-- Table Header -->
-                    <Grid ColumnDefinitions="80,*,*,*,*" 
-                          ColumnSpacing="0" 
-                          Padding="10,8"
-                          Background="#E0E0E0">
-                        <Label Text="Round" FontAttributes="Bold" HorizontalOptions="Start"/>
-                        <Label Text="{Binding P1Name}" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                        <Label Text="{Binding P2Name}" Grid.Column="2" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                        <Label Text="{Binding P3Name}" Grid.Column="3" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                        <Label Text="{Binding P4Name}" Grid.Column="4" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
-                    </Grid>
-                    
-                    <!-- Table Rows -->
-                    <CollectionView ItemsSource="{Binding Rounds}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid ColumnDefinitions="80,*,*,*,*" 
-                                      ColumnSpacing="0" 
-                                      Padding="10,8"
-                                      BackgroundColor="{Binding RoundNumber, Converter={StaticResource AlternatingRowColorConverter}}">
-                                    <Label Text="{Binding RoundNumber, StringFormat='Round {0}'}" FontAttributes="Bold" HorizontalOptions="Start"/>
-                                    <Label Text="{Binding P1}" Grid.Column="1" HorizontalTextAlignment="Center"/>
-                                    <Label Text="{Binding P2}" Grid.Column="2" HorizontalTextAlignment="Center"/>
-                                    <Label Text="{Binding P3}" Grid.Column="3" HorizontalTextAlignment="Center"/>
-                                    <Label Text="{Binding P4}" Grid.Column="4" HorizontalTextAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    
-                    <!-- Totals Row -->
-                    <Grid ColumnDefinitions="80,*,*,*,*" 
-                          ColumnSpacing="0" 
-                          Padding="10,12"
-                          Background="#4CAF50">
-                        <Label Text="TOTAL" FontAttributes="Bold" TextColor="White" HorizontalOptions="Start"/>
-                        <Label Text="{Binding T1}" Grid.Column="1" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
-                        <Label Text="{Binding T2}" Grid.Column="2" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
-                        <Label Text="{Binding T3}" Grid.Column="3" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
-                        <Label Text="{Binding T4}" Grid.Column="4" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
-                    </Grid>
-                </VerticalStackLayout>
-            </Border>
+
+            <GraphicsView
+            x:Name="ScoreCanvas"
+            HeightRequest="300" />
 
             <!-- Game Over Section -->
             <VerticalStackLayout IsVisible="{Binding IsGameOver}" Spacing="15" Margin="0,20,0,0">

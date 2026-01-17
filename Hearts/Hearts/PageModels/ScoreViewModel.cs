@@ -1,7 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Hearts.Models;
 using Hearts.Services;
-using Hearts.Pages;
+using System.Collections.ObjectModel;
 
 namespace Hearts.ViewModels;
 
@@ -14,7 +15,7 @@ public partial class ScoreViewModel : ObservableObject
         _game = game;
 
         // When rounds change, totals should refresh
-        _game.Rounds.CollectionChanged += (_, __) =>
+        _game.Players.CollectionChanged += (_, __) =>
         {
             OnPropertyChanged(nameof(T1));
             OnPropertyChanged(nameof(T2));
@@ -31,8 +32,11 @@ public partial class ScoreViewModel : ObservableObject
     public string P3Name => _game.Players[2].Name;
     public string P4Name => _game.Players[3].Name;
 
+    // Expose threshold so UI pieces (graph) can use it
+    public int Threshold => _game.Threshold;
+
     // CollectionView uses this as its ItemsSource
-    public object Rounds => _game.Rounds;
+    public ObservableCollection<Player> Rounds => _game.Players;
 
     // Round inputs
     [ObservableProperty] 
@@ -89,12 +93,19 @@ public partial class ScoreViewModel : ObservableObject
         OnPropertyChanged(nameof(T3));
         OnPropertyChanged(nameof(T4));
         OnPropertyChanged(nameof(Rounds));
+        OnPropertyChanged(nameof(Threshold));
         
         UpdateStatus();
         SubmitRoundCommand.NotifyCanExecuteChanged();
         
         // Navigate back to player entry page
         await Shell.Current.GoToAsync("..");
+    }
+
+    [RelayCommand]
+    private async Task ShowRules()
+    {
+        await Shell.Current.GoToAsync(nameof(Pages.RulesPage));
     }
 
     private void UpdateStatus()

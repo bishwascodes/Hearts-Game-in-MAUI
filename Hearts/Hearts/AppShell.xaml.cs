@@ -9,6 +9,7 @@ namespace Hearts
             InitializeComponent();
             Routing.RegisterRoute(nameof(PlayerEntryPage), typeof(PlayerEntryPage));
             Routing.RegisterRoute(nameof(ScorePage), typeof(ScorePage));
+            Routing.RegisterRoute(nameof(RulesPage), typeof(RulesPage));
         }
     }
 }

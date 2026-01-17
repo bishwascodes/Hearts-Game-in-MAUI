@@ -1,54 +1,59 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Hearts.Models;
 
 namespace Hearts.Services;
 
 public class GameService
 {
-    public Player[] Players { get; } =
+    private static readonly Player Player1 = new();
+    private static readonly Player Player2 = new();
+    private static readonly Player Player3 = new();
+    private static readonly Player Player4 = new();
+
+    public GameService()
     {
-        new Player(), new Player(), new Player(), new Player()
-    };
+        Players = new ObservableCollection<Player>
+        {
+            Player1,
+            Player2,
+            Player3,
+            Player4
+        };
+    }
+
+    public ObservableCollection<Player> Players { get; }
 
     public int Threshold { get; set; } = 100;
-
-    // This is the "table" source for the UI
-    public ObservableCollection<RoundScore> Rounds { get; } = new();
 
     public bool IsGameOver { get; private set; }
     public int WinnerIndex { get; private set; } = -1;
 
     public void Reset()
     {
-        foreach (var p in Players) p.Name = "";
+        foreach (var p in Players)
+        {
+            p.Name = string.Empty;
+            p.CumulativeScores.Clear();
+        }
         Threshold = 100;
-        Rounds.Clear();
         IsGameOver = false;
         WinnerIndex = -1;
     }
 
-    public int TotalFor(int playerIndex) =>
-        playerIndex switch
+    public int TotalFor(int playerIndex)
         {
-            0 => Rounds.Sum(r => r.P1),
-            1 => Rounds.Sum(r => r.P2),
-            2 => Rounds.Sum(r => r.P3),
-            3 => Rounds.Sum(r => r.P4),
-            _ => 0
-        };
+            return Players[playerIndex].CumulativeScores.Sum();
+        }
 
     public void AddRound(int s1, int s2, int s3, int s4)
     {
         if (IsGameOver) return;
 
-        Rounds.Add(new RoundScore
-        {
-            RoundNumber = Rounds.Count + 1,
-            P1 = s1,
-            P2 = s2,
-            P3 = s3,
-            P4 = s4
-        });
+        Players[0].CumulativeScores.Add(s1);
+        Players[1].CumulativeScores.Add(s2);
+        Players[2].CumulativeScores.Add(s3);
+        Players[3].CumulativeScores.Add(s4);
 
         // Simple win rule: first to reach threshold
         for (int i = 0; i < 4; i++)
@@ -56,7 +61,10 @@ public class GameService
             if (TotalFor(i) >= Threshold)
             {
                 IsGameOver = true;
-                WinnerIndex = i;
+                // WinnerIndex should be the player with the lowest total
+                WinnerIndex = Players.Select((p, idx) => new { Total = p.CumulativeScores.Sum(), idx })
+                                      .OrderBy(x => x.Total)
+                                      .First().idx;
                 break;
             }
         }

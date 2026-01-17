@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hearts.Pages.RulesPage"
              Title="Rules">
-
+    <ScrollView>
+        
     <VerticalStackLayout Padding="20" Spacing="16">
+        <Label Text="Welcome to the Hearts Scorekeeper!" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center"/>
         <Label Text="{Binding RulesText}" FontSize="16"/>
         <Button Text="Begin" Command="{Binding BeginCommand}" />
     </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>
