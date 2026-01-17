@@ -63,20 +63,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="Pages\PlayerEntry.xaml.cs">
-	    <DependentUpon>PlayerEntry.xaml</DependentUpon>
+	  <Compile Update="Pages\PlayerEntryPage.xaml.cs">
+	    <DependentUpon>PlayerEntryPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\RulesPage.xaml.cs">
+	    <DependentUpon>RulesPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\ScorePage.xaml.cs">
+	    <DependentUpon>ScorePage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\PlayerEntry.xaml">
+	  <MauiXaml Update="Pages\RulesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Scores.xaml">
+	  <MauiXaml Update="Pages\ScorePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\PlayerEntryPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

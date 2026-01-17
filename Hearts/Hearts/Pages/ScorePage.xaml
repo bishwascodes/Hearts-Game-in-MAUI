@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Hearts.Pages.ScorePage"
+             Title="Score">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+
+            <Label Text="{Binding StatusText}" 
+                   FontAttributes="Bold" 
+                   FontSize="16"
+                   HorizontalTextAlignment="Center"/>
+
+            <!-- Input grid - Only show when game is not over -->
+            <VerticalStackLayout IsVisible="{Binding IsGameOver, Converter={StaticResource InvertedBoolConverter}}" Spacing="12">
+                <Label Text="Enter Round Scores" FontAttributes="Bold" Margin="0,10,0,0"/>
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="8">
+                    <Label Text="{Binding P1Name}" Grid.Row="0" Grid.Column="0" VerticalOptions="Center"/>
+                    <Entry x:Name="Entry1" 
+                           Text="{Binding S1}" 
+                           Placeholder="0"
+                           Keyboard="Numeric" 
+                           Grid.Row="0" 
+                           Grid.Column="1" 
+                           WidthRequest="90"
+                           Focused="OnEntryFocused"/>
+
+                    <Label Text="{Binding P2Name}" Grid.Row="1" Grid.Column="0" VerticalOptions="Center"/>
+                    <Entry x:Name="Entry2" 
+                           Text="{Binding S2}" 
+                           Placeholder="0"
+                           Keyboard="Numeric" 
+                           Grid.Row="1" 
+                           Grid.Column="1" 
+                           WidthRequest="90"
+                           Focused="OnEntryFocused"/>
+
+                    <Label Text="{Binding P3Name}" Grid.Row="2" Grid.Column="0" VerticalOptions="Center"/>
+                    <Entry x:Name="Entry3" 
+                           Text="{Binding S3}" 
+                           Placeholder="0"
+                           Keyboard="Numeric" 
+                           Grid.Row="2" 
+                           Grid.Column="1" 
+                           WidthRequest="90"
+                           Focused="OnEntryFocused"/>
+
+                    <Label Text="{Binding P4Name}" Grid.Row="3" Grid.Column="0" VerticalOptions="Center"/>
+                    <Entry x:Name="Entry4" 
+                           Text="{Binding S4}" 
+                           Placeholder="0"
+                           Keyboard="Numeric" 
+                           Grid.Row="3" 
+                           Grid.Column="1" 
+                           WidthRequest="90"
+                           Focused="OnEntryFocused"/>
+                </Grid>
+
+                <Button Text="Submit Round" Command="{Binding SubmitRoundCommand}" />
+            </VerticalStackLayout>
+
+            <!-- Round history -->
+            <Label Text="Round History" FontAttributes="Bold" FontSize="16" Margin="0,20,0,0"/>
+            
+            <Border Stroke="#CCCCCC" 
+                    StrokeThickness="1" 
+                    Background="#FFFFFF" 
+                    Padding="0"
+                    StrokeShape="RoundRectangle 5">
+                <VerticalStackLayout>
+                    <!-- Table Header -->
+                    <Grid ColumnDefinitions="80,*,*,*,*" 
+                          ColumnSpacing="0" 
+                          Padding="10,8"
+                          Background="#E0E0E0">
+                        <Label Text="Round" FontAttributes="Bold" HorizontalOptions="Start"/>
+                        <Label Text="{Binding P1Name}" Grid.Column="1" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding P2Name}" Grid.Column="2" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding P3Name}" Grid.Column="3" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding P4Name}" Grid.Column="4" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                    </Grid>
+                    
+                    <!-- Table Rows -->
+                    <CollectionView ItemsSource="{Binding Rounds}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ColumnDefinitions="80,*,*,*,*" 
+                                      ColumnSpacing="0" 
+                                      Padding="10,8"
+                                      BackgroundColor="{Binding RoundNumber, Converter={StaticResource AlternatingRowColorConverter}}">
+                                    <Label Text="{Binding RoundNumber, StringFormat='Round {0}'}" FontAttributes="Bold" HorizontalOptions="Start"/>
+                                    <Label Text="{Binding P1}" Grid.Column="1" HorizontalTextAlignment="Center"/>
+                                    <Label Text="{Binding P2}" Grid.Column="2" HorizontalTextAlignment="Center"/>
+                                    <Label Text="{Binding P3}" Grid.Column="3" HorizontalTextAlignment="Center"/>
+                                    <Label Text="{Binding P4}" Grid.Column="4" HorizontalTextAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    
+                    <!-- Totals Row -->
+                    <Grid ColumnDefinitions="80,*,*,*,*" 
+                          ColumnSpacing="0" 
+                          Padding="10,12"
+                          Background="#4CAF50">
+                        <Label Text="TOTAL" FontAttributes="Bold" TextColor="White" HorizontalOptions="Start"/>
+                        <Label Text="{Binding T1}" Grid.Column="1" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding T2}" Grid.Column="2" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding T3}" Grid.Column="3" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding T4}" Grid.Column="4" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Game Over Section -->
+            <VerticalStackLayout IsVisible="{Binding IsGameOver}" Spacing="15" Margin="0,20,0,0">
+                <BoxView HeightRequest="2" Color="#4CAF50" />
+                <Label Text="🎉 GAME OVER! 🎉"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#4CAF50"/>
+                <Label Text="{Binding StatusText}"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       FontAttributes="Bold"/>
+                <Button Text="Play Again" 
+                        Command="{Binding PlayAgainCommand}"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Margin="20,10,20,0"/>
+                <BoxView HeightRequest="2" Color="#4CAF50" />
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

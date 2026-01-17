@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Hearts.Pages.PlayerEntryPage"
+             Title="Player Entry">
+    <VerticalStackLayout Padding="20" Spacing="12">
+        <Label Text="Players" FontAttributes="Bold" />
+        <Entry Placeholder="Player 1" Text="{Binding Player1}" />
+        <Entry Placeholder="Player 2" Text="{Binding Player2}" />
+        <Entry Placeholder="Player 3" Text="{Binding Player3}" />
+        <Entry Placeholder="Player 4" Text="{Binding Player4}" />
+
+        <Label Text="Winning Threshold" FontAttributes="Bold" Margin="0,10,0,0"/>
+        <Entry Keyboard="Numeric" Text="{Binding Threshold}" />
+
+        <Button Text="Start" Command="{Binding StartCommand}" Margin="0,10,0,0"/>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Hearts.Services;
+using Hearts.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Hearts
 {
@@ -18,6 +20,11 @@ namespace Hearts
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<GameService>();
+
+            builder.Services.AddSingleton<RulesViewModel>();
+            builder.Services.AddSingleton<PlayerEntryViewModel>();
+            builder.Services.AddSingleton<ScoreViewModel>();
 
             return builder.Build();
         }
